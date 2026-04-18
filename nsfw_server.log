@@ -1,0 +1,252 @@
+[0;93m2026-04-18 18:55:47.429752719 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:nsfw_server:Starting YUKI NSFW Server on port 7860...
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:     Started parent process [730095]
+[NSFW Server] ✅ NudeNet loaded!
+[0;93m2026-04-18 18:55:48.053118494 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[0;93m2026-04-18 18:55:48.076392746 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:     Started server process [730100]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [730101]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     127.0.0.1:42938 - "GET /health HTTP/1.1" 200 OK
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:     Received SIGTERM, exiting.
+INFO:     Terminated child process [730100]
+INFO:     Terminated child process [730101]
+INFO:     Waiting for child process [730100]
+INFO:     Shutting down
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [730101]
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [730100]
+INFO:     Waiting for child process [730101]
+INFO:     Stopping parent process [730095]
+[0;93m2026-04-18 19:11:29.419197324 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:nsfw_server:Starting YUKI NSFW Server on port 7860...
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:     Started parent process [732466]
+[NSFW Server] ✅ NudeNet loaded!
+[0;93m2026-04-18 19:11:29.871685226 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[0;93m2026-04-18 19:11:29.883381246 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:     Started server process [732471]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [732472]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:     Received SIGTERM, exiting.
+INFO:     Terminated child process [732471]
+INFO:     Terminated child process [732472]
+INFO:     Waiting for child process [732471]
+INFO:     Shutting down
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [732471]
+INFO:     Application shutdown complete.
+INFO:     Finished server process [732472]
+INFO:     Waiting for child process [732472]
+INFO:     Stopping parent process [732466]
+[0;93m2026-04-18 19:15:03.827825883 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:nsfw_server:Starting YUKI NSFW Server on port 7860...
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:     Started parent process [733018]
+[NSFW Server] ✅ NudeNet loaded!
+[0;93m2026-04-18 19:15:04.264377049 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[0;93m2026-04-18 19:15:04.271513790 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:     Started server process [733023]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [733024]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.53 labels=['MALE_BREAST_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.56 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.72 labels=['FEMALE_BREAST_EXPOSED', 'FEMALE_BREAST_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.83 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.82 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.78 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:     Received SIGTERM, exiting.
+INFO:     Terminated child process [733023]
+INFO:     Terminated child process [733024]
+INFO:     Waiting for child process [733023]
+INFO:     Shutting down
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [733023]
+INFO:     Waiting for child process [733024]
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [733024]
+INFO:     Stopping parent process [733018]
+[0;93m2026-04-18 19:17:07.147153380 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:nsfw_server:Starting YUKI NSFW Server on port 7860...
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:     Started parent process [733361]
+[NSFW Server] ✅ NudeNet loaded!
+[0;93m2026-04-18 19:17:07.764934810 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[0;93m2026-04-18 19:17:07.792481769 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:     Started server process [733366]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [733367]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:nsfw_server:[check] nsfw=True score=0.78 labels=['BUTTOCKS_EXPOSED']
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.72 labels=['FEMALE_BREAST_EXPOSED', 'FEMALE_BREAST_EXPOSED']
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.70 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.65 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:     Received SIGTERM, exiting.
+INFO:     Terminated child process [733366]
+INFO:     Terminated child process [733367]
+INFO:     Waiting for child process [733366]
+INFO:     Shutting down
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [733367]
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [733366]
+INFO:     Waiting for child process [733367]
+INFO:     Stopping parent process [733361]
+[0;93m2026-04-18 19:19:16.411318395 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:nsfw_server:Starting YUKI NSFW Server on port 7860...
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:     Started parent process [733713]
+[NSFW Server] ✅ NudeNet loaded!
+[0;93m2026-04-18 19:19:16.848935162 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[0;93m2026-04-18 19:19:16.908327335 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:     Started server process [733718]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [733719]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.75 labels=['BUTTOCKS_EXPOSED']
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.36 labels=['FEMALE_BREAST_EXPOSED', 'FEMALE_BREAST_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.78 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:     Received SIGTERM, exiting.
+INFO:     Terminated child process [733718]
+INFO:     Terminated child process [733719]
+INFO:     Waiting for child process [733718]
+INFO:     Shutting down
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [733719]
+INFO:     Finished server process [733718]
+INFO:     Waiting for child process [733719]
+INFO:     Stopping parent process [733713]
+[0;93m2026-04-18 19:22:35.438532935 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:nsfw_server:Starting YUKI NSFW Server on port 7860...
+INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
+INFO:     Started parent process [734231]
+[NSFW Server] ✅ NudeNet loaded!
+[0;93m2026-04-18 19:22:36.030171383 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[0;93m2026-04-18 19:22:36.068658294 [W:onnxruntime:Default, device_discovery.cc:325 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:92 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+INFO:     Started server process [734238]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [734239]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:nsfw_server:[check] nsfw=True score=0.78 labels=['BUTTOCKS_EXPOSED']
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.52 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=False score=0.00 labels=[]
+[NSFW Server] ✅ NudeNet loaded!
+[NSFW Server] ✅ NudeNet loaded!
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK
+INFO:nsfw_server:[check] nsfw=True score=0.67 labels=['BUTTOCKS_EXPOSED']
+INFO:     16.16.151.215:0 - "POST /check HTTP/1.1" 200 OK

@@ -40,29 +40,29 @@ except Exception as e:
 
 # ── NSFW labels jo actually explicit hain ─────────────────────────────────────
 EXPLICIT_LABELS = {
-    "EXPOSED_ANUS",
-    "EXPOSED_ARMPITS",      # exclude karna ho toh hata do
-    "EXPOSED_BELLY",        # exclude karna ho toh hata do
-    "EXPOSED_BREAST_F",     # female exposed breast
-    "EXPOSED_BUTTOCKS",
-    "EXPOSED_GENITALIA_F",
-    "EXPOSED_GENITALIA_M",
-    "EXPOSED_BREAST_M",
-    "FACE_F",               # face detection (optional)
-    "FACE_M",
+    "ANUS_EXPOSED",
+    "ARMPITS_EXPOSED",      # exclude karna ho toh hata do
+    "BELLY_EXPOSED",        # exclude karna ho toh hata do
+    "FEMALE_BREAST_EXPOSED",     # female exposed breast
+    "BUTTOCKS_EXPOSED",
+    "FEMALE_GENITALIA_EXPOSED",
+    "MALE_GENITALIA_EXPOSED",
+    "MALE_BREAST_EXPOSED",
+    "FACE_FEMALE",               # face detection (optional)
+    "FACE_MALE",
 }
 
 # Sirf inhe NSFW maano (strict mode)
 STRICT_NSFW = {
-    "EXPOSED_ANUS",
-    "EXPOSED_BREAST_F",
-    "EXPOSED_BUTTOCKS",
-    "EXPOSED_GENITALIA_F",
-    "EXPOSED_GENITALIA_M",
-    "EXPOSED_BREAST_M",
+    "ANUS_EXPOSED",
+    "FEMALE_BREAST_EXPOSED",
+    "BUTTOCKS_EXPOSED",
+    "FEMALE_GENITALIA_EXPOSED",
+    "MALE_GENITALIA_EXPOSED",
+    "MALE_BREAST_EXPOSED",
 }
 
-NSFW_THRESHOLD = 0.55   # 55% confidence se upar → NSFW
+NSFW_THRESHOLD = 0.01
 
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
@@ -91,7 +91,7 @@ async def check_nsfw(file: UploadFile = File(...)):
     {
         "nsfw": true/false,
         "score": 0.85,           # highest confidence among NSFW labels
-        "labels": ["EXPOSED_BREAST_F"],   # detected NSFW labels
+        "labels": ["FEMALE_BREAST_EXPOSED"],   # detected NSFW labels
         "all_detections": [...]  # full NudeNet output
     }
     """
