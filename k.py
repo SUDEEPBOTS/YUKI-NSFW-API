@@ -8,7 +8,7 @@ from PIL import Image
 # --- CONFIGURATION ---
 API_ID = 38674666  # Tera API ID
 API_HASH = "b4f0fbf8fb560c4bc9e7b9f3698e474c" # Tera API Hash
-BOT_TOKEN = "8154444104:AAEI4hcole942uJDgR8YsZTsheFSdLL2ej0"
+BOT_TOKEN = "8154444104:AAEI8YsZTsheFSdLL2ej0"
 
 # EK-DUM SAHI ENDPOINT: /check
 NSFW_API_URL = "https://suspended-twisted-hans-acquisitions.trycloudflare.com/check" 
