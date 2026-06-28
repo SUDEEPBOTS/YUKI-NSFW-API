@@ -1,0 +1,25 @@
+{
+  "name": "YUKI NSFW API",
+  "description": "Advanced Image Moderation & NudeNet Detection Engine.",
+  "logo": "https://telegra.ph/file/8e20f1b212f43fb294b43.jpg",
+  "keywords": [
+    "nsfw",
+    "nudenet",
+    "fastapi",
+    "api",
+    "moderation",
+    "image"
+  ],
+  "repository": "https://github.com/SUDEEPBOTS/YUKI-NSFW-API",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+}

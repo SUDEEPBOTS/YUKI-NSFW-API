@@ -1,3 +1,12 @@
+# Copyright (c) 2025 @SUDEEPBOTS <HellfireDevs>
+# Location: delhi,noida
+#
+# All rights reserved.
+#
+# This code is the intellectual property of SUDEEPBOTS.
+# You are not allowed to copy, modify, redistribute, or use this
+# code for commercial or personal projects without explicit permission.
+
 """
 YUKI NSFW API SERVER
 ====================
@@ -38,31 +47,7 @@ except Exception as e:
     detector = None
     print(f"[NSFW Server] ❌ NudeNet failed: {e}")
 
-# ── NSFW labels jo actually explicit hain ─────────────────────────────────────
-EXPLICIT_LABELS = {
-    "ANUS_EXPOSED",
-    "ARMPITS_EXPOSED",      # exclude karna ho toh hata do
-    "BELLY_EXPOSED",        # exclude karna ho toh hata do
-    "FEMALE_BREAST_EXPOSED",     # female exposed breast
-    "BUTTOCKS_EXPOSED",
-    "FEMALE_GENITALIA_EXPOSED",
-    "MALE_GENITALIA_EXPOSED",
-    "MALE_BREAST_EXPOSED",
-    "FACE_FEMALE",               # face detection (optional)
-    "FACE_MALE",
-}
-
-# Sirf inhe NSFW maano (strict mode)
-STRICT_NSFW = {
-    "ANUS_EXPOSED",
-    "FEMALE_BREAST_EXPOSED",
-    "BUTTOCKS_EXPOSED",
-    "FEMALE_GENITALIA_EXPOSED",
-    "MALE_GENITALIA_EXPOSED",
-    "MALE_BREAST_EXPOSED",
-}
-
-NSFW_THRESHOLD = 0.01
+from config import STRICT_NSFW, EXPLICIT_LABELS, NSFW_THRESHOLD, HOST, PORT, WORKERS
 
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
@@ -166,12 +151,11 @@ async def check_frame(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("NSFW_PORT", 7860))
-    log.info(f"Starting YUKI NSFW Server on port {port}...")
+    log.info(f"Starting YUKI NSFW Server on {HOST}:{PORT} with {WORKERS} workers...")
     uvicorn.run(
         "nsfw_server:app",
-        host="0.0.0.0",
-        port=port,
+        host=HOST,
+        port=PORT,
         log_level="info",
-        workers=2,          # 2 workers = parallel checks, 8GB RAM mein fine
+        workers=WORKERS,
     )

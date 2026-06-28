@@ -1,1 +1,14 @@
-myenv/
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+*.log
+*.pid
+*.session
+downloads/
+test.jpg
+cloudflared
+S
+k.py
+test_nude.py
