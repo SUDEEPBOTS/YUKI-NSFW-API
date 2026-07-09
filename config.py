@@ -10,7 +10,7 @@
 import os
 
 # Server Configuration
-PORT = int(os.environ.get("NSFW_PORT", 7860))
+PORT = int(os.environ.get("PORT", os.environ.get("NSFW_PORT", 7860)))
 HOST = os.environ.get("NSFW_HOST", "0.0.0.0")
 WORKERS = int(os.environ.get("NSFW_WORKERS", 2))
 
