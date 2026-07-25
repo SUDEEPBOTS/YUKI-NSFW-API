@@ -15,9 +15,10 @@ HOST = os.environ.get("NSFW_HOST", "0.0.0.0")
 WORKERS = int(os.environ.get("NSFW_WORKERS", 2))
 
 # NudeNet Configuration
-NSFW_THRESHOLD = float(os.environ.get("NSFW_THRESHOLD", 0.01))
+NSFW_THRESHOLD = float(os.environ.get("NSFW_THRESHOLD", 0.15))
+WEAK_THRESHOLD = float(os.environ.get("WEAK_THRESHOLD", 0.5))
 
-# Labels to consider as strict NSFW
+# Labels to consider as strict NSFW (exposed + covered)
 STRICT_NSFW = {
     "ANUS_EXPOSED",
     "FEMALE_BREAST_EXPOSED",
@@ -25,12 +26,33 @@ STRICT_NSFW = {
     "FEMALE_GENITALIA_EXPOSED",
     "MALE_GENITALIA_EXPOSED",
     "MALE_BREAST_EXPOSED",
+    "FEMALE_BREAST_COVERED",
+    "BUTTOCKS_COVERED",
+    "FEMALE_GENITALIA_COVERED",
+    "MALE_GENITALIA_COVERED",
+    "ANUS_COVERED",
+    "BELLY_EXPOSED",
+    "ARMPITS_EXPOSED",
 }
 
-# Labels that are explicit but maybe not strictly blocked
+# Labels that are explicit but need higher threshold
 EXPLICIT_LABELS = STRICT_NSFW.union({
-    "ARMPITS_EXPOSED",
-    "BELLY_EXPOSED",
     "FACE_FEMALE",
     "FACE_MALE",
 })
+
+# Weak NSFW — sirf high threshold pe trigger karein
+WEAK_NSFW = {
+    "FACE_FEMALE",
+    "FACE_MALE",
+    "BELLY_COVERED",
+    "ARMPITS_COVERED",
+    "BREAST_EXPOSED",
+    "BREAST_COVERED",
+    "NIPPLE_EXPOSED",
+    "COVERED_BREAST",
+    "COVERED_GENITALIA",
+    "COVERED_BUTTOCKS",
+    "EXPOSED_BELLY",
+    "EXPOSED_BREAST",
+}

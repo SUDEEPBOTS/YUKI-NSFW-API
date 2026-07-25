@@ -47,7 +47,7 @@ except Exception as e:
     detector = None
     print(f"[NSFW Server] ❌ NudeNet failed: {e}")
 
-from config import STRICT_NSFW, EXPLICIT_LABELS, NSFW_THRESHOLD, HOST, PORT, WORKERS
+from config import STRICT_NSFW, WEAK_NSFW, EXPLICIT_LABELS, NSFW_THRESHOLD, WEAK_THRESHOLD, HOST, PORT, WORKERS
 
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
@@ -115,7 +115,13 @@ async def check_nsfw(file: UploadFile = File(...)):
             label = detection.get("class", "")
             score = float(detection.get("score", 0))
 
+            # Strict NSFW: exposed + covered body parts (low threshold)
             if label in STRICT_NSFW and score >= NSFW_THRESHOLD:
+                nsfw_found.append({"label": label, "score": round(score, 3)})
+                highest_score = max(highest_score, score)
+
+            # Weak NSFW: face/belly/covered — sirf high score pe count karo
+            elif label in WEAK_NSFW and score >= WEAK_THRESHOLD:
                 nsfw_found.append({"label": label, "score": round(score, 3)})
                 highest_score = max(highest_score, score)
 
