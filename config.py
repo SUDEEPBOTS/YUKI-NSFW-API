@@ -15,8 +15,8 @@ HOST = os.environ.get("NSFW_HOST", "0.0.0.0")
 WORKERS = int(os.environ.get("NSFW_WORKERS", 2))
 
 # NudeNet Configuration
-NSFW_THRESHOLD = float(os.environ.get("NSFW_THRESHOLD", 0.080))
-WEAK_THRESHOLD = float(os.environ.get("WEAK_THRESHOLD", 0.080))
+NSFW_THRESHOLD = float(os.environ.get("NSFW_THRESHOLD", 0.01))
+WEAK_THRESHOLD = float(os.environ.get("WEAK_THRESHOLD", 0.01))
 
 # Labels to consider as strict NSFW (exposed + covered)
 STRICT_NSFW = {
