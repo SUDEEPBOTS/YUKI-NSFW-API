@@ -59,7 +59,7 @@ log = logging.getLogger("nsfw_server")
 
 @app.get("/")
 async def root():
-    return {"status": "ok",: detector is not None}
+    return {"status": "ok": detector is not None}
 
 
 @app.get("/health")
