@@ -47,7 +47,7 @@ except Exception as e:
     detector = None
     print(f"[NSFW Server] ❌ NudeNet failed: {e}")
 
-from config import STRICT_NSFW, WEAK_NSFW, EXPLICIT_LABELS, NSFW_THRESHOLD, WEAK_THRESHOLD, HOST, PORT, WORKERS
+from config import STRICT_NSFW, WEAK_NSFW, EXPLICIT_LABELS, NSFW_THRESHOLD, WEAK_THRESHOLD, HOST, PORT, WORKERS, VIT_API_URL, VIT_FALLBACK, VIT_THRESHOLD
 
 
 # ── FastAPI app ───────────────────────────────────────────────────────────────
@@ -126,6 +126,45 @@ async def check_nsfw(file: UploadFile = File(...)):
                 highest_score = max(highest_score, score)
 
         is_nsfw = len(nsfw_found) > 0
+
+        # ── ViT Fallback ──────────────────────────────────────────────────
+        # Agar NudeNet ko kuch nahi mila, ViT API try karo (stickers etc)
+        if not is_nsfw and VIT_FALLBACK:
+            try:
+                # Re-save image bytes for ViT upload
+                img_bytes_io = io.BytesIO()
+                img.save(img_bytes_io, "JPEG", quality=85)
+                img_bytes = img_bytes_io.getvalue()
+
+                # Send to ViT API
+                import httpx
+                async with httpx.AsyncClient(timeout=15.0) as client:
+                    vit_resp = await client.post(
+                        VIT_API_URL,
+                        files={"file": ("image.jpg", img_bytes, "image/jpeg")}
+                    )
+                    if vit_resp.status_code == 200:
+                        vit_data = vit_resp.json()
+                        vit_nsfw = vit_data.get("nsfw", False)
+                        vit_score = vit_data.get("nsfw_score", 0)
+
+                        if vit_nsfw and vit_score >= VIT_THRESHOLD:
+                            nsfw_found.append({
+                                "label": "VIT_NSFW",
+                                "score": round(vit_score, 3),
+                                "model": "vit"
+                            })
+                            highest_score = max(highest_score, vit_score)
+                            is_nsfw = True
+                            log.info(f"[vit_fallback] nsfw=True score={vit_score:.3f}")
+                        else:
+                            log.info(f"[vit_fallback] nsfw=False score={vit_score:.3f}")
+                    else:
+                        log.warning(f"[vit_fallback] API error: {vit_resp.status_code}")
+            except ImportError:
+                log.warning("[vit_fallback] httpx not installed — skipping")
+            except Exception as e:
+                log.warning(f"[vit_fallback] Failed: {e}")
 
         log.info(f"[check] nsfw={is_nsfw} score={highest_score:.2f} labels={[x['label'] for x in nsfw_found]}")
 

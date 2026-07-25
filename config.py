@@ -56,3 +56,8 @@ WEAK_NSFW = {
     "EXPOSED_BELLY",
     "EXPOSED_BREAST",
 }
+
+# ViT API Config (fallback when NudeNet finds nothing)
+VIT_API_URL = os.environ.get("VIT_API_URL", "https://yuki-nsfw-vit-production.up.railway.app/check")
+VIT_FALLBACK = os.environ.get("VIT_FALLBACK", "true").lower() in ("true", "1", "yes")
+VIT_THRESHOLD = float(os.environ.get("VIT_THRESHOLD", 0.3))
