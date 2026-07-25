@@ -72,117 +72,101 @@ async def check_nsfw(file: UploadFile = File(...)):
     """
     Image bhejo → NSFW hai ya nahi batata.
 
-    Response:
-    {
-        "nsfw": true/false,
-        "score": 0.85,           # highest confidence among NSFW labels
-        "labels": ["FEMALE_BREAST_EXPOSED"],   # detected NSFW labels
-        "all_detections": [...]  # full NudeNet output
-    }
+    Pipeline: ViT (primary) → NudeNet (fallback)
     """
-    if detector is None:
-        raise HTTPException(503, "NudeNet not loaded")
-
     # Read image bytes
     try:
         contents = await file.read()
         if len(contents) < 100:
             raise HTTPException(400, "File too small / empty")
 
-        # Validate it's actually an image
         img = Image.open(io.BytesIO(contents))
         img.verify()
+        img = Image.open(io.BytesIO(contents)).convert("RGB")
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(400, f"Invalid image: {e}")
 
-    # Save to temp file (NudeNet needs file path)
-    tmp_path = f"/tmp/nsfw_check_{os.getpid()}.jpg"
-    try:
-        # Re-open (verify() closes the file)
-        img = Image.open(io.BytesIO(contents)).convert("RGB")
-        img.save(tmp_path, "JPEG", quality=85)
+    nsfw_found   = []
+    highest_score = 0.0
 
-        # Run detection
-        results = detector.detect(tmp_path)
-
-        # Analyze results
-        nsfw_found   = []
-        highest_score = 0.0
-
-        for detection in results:
-            label = detection.get("class", "")
-            score = float(detection.get("score", 0))
-
-            # Strict NSFW: exposed + covered body parts (low threshold)
-            if label in STRICT_NSFW and score >= NSFW_THRESHOLD:
-                nsfw_found.append({"label": label, "score": round(score, 3)})
-                highest_score = max(highest_score, score)
-
-            # Weak NSFW: face/belly/covered — sirf high score pe count karo
-            elif label in WEAK_NSFW and score >= WEAK_THRESHOLD:
-                nsfw_found.append({"label": label, "score": round(score, 3)})
-                highest_score = max(highest_score, score)
-
-        is_nsfw = len(nsfw_found) > 0
-
-        # ── ViT Fallback ──────────────────────────────────────────────────
-        # Agar NudeNet ko kuch nahi mila, ViT API try karo (stickers etc)
-        if not is_nsfw and VIT_FALLBACK:
-            try:
-                # Re-save image bytes for ViT upload
-                img_bytes_io = io.BytesIO()
-                img.save(img_bytes_io, "JPEG", quality=85)
-                img_bytes = img_bytes_io.getvalue()
-
-                # Send to ViT API
-                import httpx
-                async with httpx.AsyncClient(timeout=15.0) as client:
-                    vit_resp = await client.post(
-                        VIT_API_URL,
-                        files={"file": ("image.jpg", img_bytes, "image/jpeg")}
-                    )
-                    if vit_resp.status_code == 200:
-                        vit_data = vit_resp.json()
-                        vit_nsfw = vit_data.get("nsfw", False)
-                        vit_score = vit_data.get("nsfw_score", 0)
-
-                        if vit_nsfw and vit_score >= VIT_THRESHOLD:
-                            nsfw_found.append({
-                                "label": "VIT_NSFW",
-                                "score": round(vit_score, 3),
-                                "model": "vit"
-                            })
-                            highest_score = max(highest_score, vit_score)
-                            is_nsfw = True
-                            log.info(f"[vit_fallback] nsfw=True score={vit_score:.3f}")
-                        else:
-                            log.info(f"[vit_fallback] nsfw=False score={vit_score:.3f}")
-                    else:
-                        log.warning(f"[vit_fallback] API error: {vit_resp.status_code}")
-            except ImportError:
-                log.warning("[vit_fallback] httpx not installed — skipping")
-            except Exception as e:
-                log.warning(f"[vit_fallback] Failed: {e}")
-
-        log.info(f"[check] nsfw={is_nsfw} score={highest_score:.2f} labels={[x['label'] for x in nsfw_found]}")
-
-        return JSONResponse({
-            "nsfw":           is_nsfw,
-            "score":          round(highest_score, 3),
-            "labels":         [x["label"] for x in nsfw_found],
-            "all_detections": results,
-        })
-
-    except Exception as e:
-        log.error(f"[check] Detection error: {e}")
-        raise HTTPException(500, f"Detection failed: {e}")
-    finally:
+    # ── 1. ViT Check (Primary) ────────────────────────────────────────────
+    # 96.5% accuracy — photos, stickers, drawings sab pe kaam karta hai
+    if VIT_FALLBACK:
         try:
-            os.remove(tmp_path)
-        except Exception:
-            pass
+            img_bytes_io = io.BytesIO()
+            img.save(img_bytes_io, "JPEG", quality=85)
+            img_bytes = img_bytes_io.getvalue()
+
+            import httpx
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                vit_resp = await client.post(
+                    VIT_API_URL,
+                    files={"file": ("image.jpg", img_bytes, "image/jpeg")}
+                )
+                if vit_resp.status_code == 200:
+                    vit_data = vit_resp.json()
+                    vit_nsfw = vit_data.get("nsfw", False)
+                    vit_score = vit_data.get("nsfw_score", 0)
+
+                    if vit_nsfw and vit_score >= VIT_THRESHOLD:
+                        nsfw_found.append({
+                            "label": "VIT_NSFW",
+                            "score": round(vit_score, 3),
+                            "model": "vit"
+                        })
+                        highest_score = max(highest_score, vit_score)
+                        log.info(f"[vit] nsfw=True score={vit_score:.3f}")
+                    else:
+                        log.info(f"[vit] nsfw=False score={vit_score:.3f}")
+                else:
+                    log.warning(f"[vit] API error: {vit_resp.status_code}")
+        except ImportError:
+            log.warning("[vit] httpx not installed — skipping")
+        except Exception as e:
+            log.warning(f"[vit] Failed: {e}")
+
+    # ── 2. NudeNet Check (Fallback — ViT miss kare toh) ─────────────────
+    if detector is not None and not nsfw_found:
+        tmp_path = f"/tmp/nsfw_check_{os.getpid()}.jpg"
+        try:
+            img.save(tmp_path, "JPEG", quality=85)
+            results = detector.detect(tmp_path)
+
+            for detection in results:
+                label = detection.get("class", "")
+                score = float(detection.get("score", 0))
+
+                if label in STRICT_NSFW and score >= NSFW_THRESHOLD:
+                    nsfw_found.append({"label": label, "score": round(score, 3), "model": "nudenet"})
+                    highest_score = max(highest_score, score)
+
+                elif label in WEAK_NSFW and score >= WEAK_THRESHOLD:
+                    nsfw_found.append({"label": label, "score": round(score, 3), "model": "nudenet"})
+                    highest_score = max(highest_score, score)
+
+            if nsfw_found:
+                log.info(f"[nudenet] nsfw=True labels={[x['label'] for x in nsfw_found]}")
+            else:
+                log.info(f"[nudenet] nsfw=False — safe image")
+        except Exception as e:
+            log.error(f"[nudenet] Detection error: {e}")
+        finally:
+            try:
+                os.remove(tmp_path)
+            except Exception:
+                pass
+
+    is_nsfw = len(nsfw_found) > 0
+    log.info(f"[check] nsfw={is_nsfw} score={highest_score:.2f} models={[x.get('model','?') for x in nsfw_found]}")
+
+    return JSONResponse({
+        "nsfw":           is_nsfw,
+        "score":          round(highest_score, 3),
+        "labels":         [{"label": x["label"], "model": x.get("model", "?")} for x in nsfw_found],
+        "models_used":    "vit" + ("+nudenet" if not is_nsfw and detector else ""),
+    })
 
 
 # ── GIF / Video frame check ───────────────────────────────────────────────────
