@@ -37,14 +37,10 @@ STRICT_NSFW = {
 
 # Labels that are explicit but need higher threshold
 EXPLICIT_LABELS = STRICT_NSFW.union({
-    "FACE_FEMALE",
-    "FACE_MALE",
 })
 
 # Weak NSFW — sirf high threshold pe trigger karein
 WEAK_NSFW = {
-    "FACE_FEMALE",
-    "FACE_MALE",
     "BELLY_COVERED",
     "ARMPITS_COVERED",
     "BREAST_EXPOSED",
