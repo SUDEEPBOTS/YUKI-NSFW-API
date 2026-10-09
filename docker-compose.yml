@@ -1,0 +1,28 @@
+# --------------------------------------------------------------------------
+# Copyright (c) 2026 SUDEEPBOTS. All Rights Reserved.
+# Yuki NSFW API — High-Performance Computer Vision Content Moderation Engine
+# Licensed under the MIT License. See LICENSE in the project root for details.
+# --------------------------------------------------------------------------
+
+version: '3.8'
+
+services:
+  nsfw-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yuki_nsfw_engine
+    restart: always
+    ports:
+      - "7860:7860"
+    env_file:
+      - sample.env
+    environment:
+      - PORT=7860
+      - NSFW_HOST=0.0.0.0
+      - NSFW_WORKERS=2
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

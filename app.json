@@ -1,0 +1,29 @@
+{
+  "name": "Yuki NSFW API",
+  "description": "High-Performance FastAPI & Computer Vision Content Moderation Engine powered by NudeNet ONNX and Vision Transformer.",
+  "logo": "https://raw.githubusercontent.com/SUDEEPBOTS/YUKI-NSFW-API/main/assets/banner.png",
+  "keywords": [
+    "nsfw",
+    "nudenet",
+    "fastapi",
+    "api",
+    "moderation",
+    "image-classification",
+    "computer-vision",
+    "SUDEEPBOTS"
+  ],
+  "repository": "https://github.com/SUDEEPBOTS/YUKI-NSFW-API",
+  "website": "https://github.com/SUDEEPBOTS/YUKI-NSFW-API",
+  "success_url": "https://t.me/heartstealer_x",
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: yuki-nsfw-api
+    env: docker
+    plan: free

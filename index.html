@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yuki NSFW API — AI Computer Vision Content Moderation Engine</title>
+  <meta name="description" content="High-performance FastAPI and Computer Vision microservice powered by NudeNet ONNX, Vision Transformer (ViT), and asynchronous image classification." />
+  <meta name="theme-color" content="#8b5cf6" />
+
+  <!-- Google Fonts & Lucide Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg: #090814;
+      --surface: #100e24;
+      --surface-border: rgba(139, 92, 246, 0.22);
+      --primary: #8b5cf6;
+      --primary-glow: rgba(139, 92, 246, 0.45);
+      --secondary: #06b6d4;
+      --secondary-glow: rgba(6, 182, 212, 0.35);
+      --danger: #ec4899;
+      --danger-glow: rgba(236, 72, 153, 0.4);
+      --success: #10b981;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --card-bg: rgba(16, 14, 36, 0.75);
+      --radius: 16px;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(6, 182, 212, 0.1) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+    }
+
+    .cyber-grid {
+      position: fixed;
+      inset: 0;
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 8, 20, 0.85);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff, #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid var(--primary);
+      color: #c4b5fd;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 50px;
+      text-align: center;
+      position: relative;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      color: #c4b5fd;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span.gradient {
+      background: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 40%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Interactive Vision Scanner Console */
+    .studio-wrapper {
+      margin: 50px 0 80px;
+      background: var(--card-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(139, 92, 246, 0.15);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+    }
+
+    .studio-header {
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .studio-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .scanner-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+      padding: 30px;
+    }
+
+    @media (max-width: 860px) {
+      .scanner-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .scan-display {
+      background: rgba(8, 7, 18, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      position: relative;
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .scan-laser {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+      box-shadow: 0 0 15px var(--primary);
+      animation: scan-move 3s ease-in-out infinite;
+    }
+
+    @keyframes scan-move {
+      0%, 100% { top: 5%; opacity: 0.3; }
+      50% { top: 92%; opacity: 1; }
+    }
+
+    .scan-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .metric-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 14px 18px;
+    }
+
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .meter-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .meter-fill.safe {
+      width: 98.4%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+    }
+
+    .meter-fill.nsfw {
+      width: 1.6%;
+      background: linear-gradient(90deg, #ec4899, #ef4444);
+    }
+
+    /* Features Grid */
+    .features-section {
+      padding: 60px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title p {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius);
+      padding: 30px;
+      transition: transform 0.25s, border-color 0.25s;
+      position: relative;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--surface-border);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .feature-icon.cyan {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: rgba(6, 182, 212, 0.3);
+      color: var(--secondary);
+    }
+
+    .feature-icon.pink {
+      background: rgba(236, 72, 153, 0.1);
+      border-color: rgba(236, 72, 153, 0.3);
+      color: var(--danger);
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Terminal & API Specs */
+    .terminal-section {
+      padding: 60px 0;
+    }
+
+    .terminal-box {
+      background: #080716;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .terminal-topbar {
+      background: #0e0d22;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+
+    .terminal-body {
+      padding: 24px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+    }
+
+    .command-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .command-table th {
+      padding: 12px;
+      color: var(--text-dim);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .command-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .cmd-name {
+      color: var(--secondary);
+      font-weight: 600;
+      background: rgba(6, 182, 212, 0.08);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Deployment Options */
+    .deploy-section {
+      padding: 60px 0 100px;
+    }
+
+    .deploy-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .deploy-card:hover {
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    .deploy-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .deploy-logo {
+      font-size: 32px;
+    }
+
+    .deploy-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .deploy-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="cyber-grid"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <a href="#" class="brand">
+        <div class="brand-logo">🛡️</div>
+        <div>
+          <span class="brand-name">Yuki NSFW API</span>
+          <span class="brand-tag">v2.0 AI</span>
+        </div>
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#scanner">Live Demo</a>
+        <a href="#endpoints">API Reference</a>
+        <a href="#deploy">Deploy</a>
+        <a href="https://github.com/SUDEEPBOTS/YUKI-NSFW-API" target="_blank" class="btn btn-outline">
+          <i data-lucide="github"></i> GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <div class="badge-pill">
+      <i data-lucide="scan" size="14"></i> NudeNet ONNX + Vision Transformer (ViT) Hybrid Moderation Engine
+    </div>
+    <h1>
+      Real-Time Neural Vision<br />
+      <span class="gradient">Content Moderation API</span>
+    </h1>
+    <p>
+      An ultra-fast, asynchronous FastAPI computer vision microservice designed for Telegram bots, web apps, and discord servers. Automatically detects exposed and covered anatomical body parts with bounding box precision in milliseconds.
+    </p>
+    <div class="hero-actions">
+      <a href="#scanner" class="btn btn-primary">
+        <i data-lucide="play"></i> Try Interactive Demo
+      </a>
+      <a href="#deploy" class="btn btn-outline">
+        <i data-lucide="cpu"></i> Quick Deploy
+      </a>
+      <a href="https://t.me/+N08m5L1mCTU2NTE1" target="_blank" class="btn btn-outline">
+        <i data-lucide="users"></i> Community Support
+      </a>
+    </div>
+  </section>
+
+  <!-- Interactive Scanner -->
+  <section id="scanner" class="container">
+    <div class="studio-wrapper">
+      <div class="studio-header">
+        <div class="studio-status">
+          <span class="status-dot"></span>
+          <span>NEURAL CLASSIFIER: ACTIVE (NudeNet 320n ONNX + ViT)</span>
+        </div>
+        <div style="font-size: 12px; color: var(--text-dim); font-family: var(--font-mono);">
+          Inference Latency: <span style="color: var(--secondary);">~120ms</span>
+        </div>
+      </div>
+
+      <div class="scanner-grid">
+        <div class="scan-display" id="scanDisplay">
+          <div class="scan-laser"></div>
+          <div style="text-align: center; z-index: 2;">
+            <i data-lucide="image" size="48" style="color: var(--primary); margin-bottom: 12px;"></i>
+            <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">Simulation Image Loaded</div>
+            <div style="font-size: 13px; color: var(--text-dim);">Neural vision scanning in real-time...</div>
+          </div>
+        </div>
+
+        <div class="scan-metrics">
+          <div class="metric-card">
+            <div class="metric-head">
+              <span>Safety Confidence Score</span>
+              <span style="color: var(--success); font-family: var(--font-mono);">98.4% SAFE</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill safe"></div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-head">
+              <span>NSFW Probability Score</span>
+              <span style="color: var(--danger); font-family: var(--font-mono);">1.6% EXPLICIT</span>
+            </div>
+            <div class="meter-bar">
+              <div class="meter-fill nsfw"></div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-head">
+              <span>Detected Anatomical Labels</span>
+              <span style="color: var(--secondary); font-family: var(--font-mono);">0 LABELS FLAGGED</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px; font-family: var(--font-mono);">
+              [NORMAL_IMAGE, SAFE_CLASSIFICATION]
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="container features-section">
+    <div class="section-title">
+      <h2>High-Throughput Content Safety</h2>
+      <p>Engineered for high-volume moderation bots, community channels, and user uploads</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i data-lucide="cpu"></i>
+        </div>
+        <h3>Dual-Model Hybrid Pipeline</h3>
+        <p>Employs Vision Transformer (ViT) as high-precision primary classifier, falling back to local NudeNet ONNX for bounding box anatomical detection.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon cyan">
+          <i data-lucide="zap"></i>
+        </div>
+        <h3>Sub-150ms Local Inference</h3>
+        <p>Runs directly on CPU via optimized ONNX Runtime and OpenCV, eliminating costly third-party API subscription limits and external data leakage.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon pink">
+          <i data-lucide="layers"></i>
+        </div>
+        <h3>Granular Detection Labels</h3>
+        <p>Classifies 16+ distinct categories including exposed/covered breasts, buttocks, genitalia, and weak suggestive cues with configurable thresholds.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i data-lucide="bot"></i>
+        </div>
+        <h3>Telegram & Webhook Ready</h3>
+        <p>Included drop-in Pyrogram client script (`k.py`) provides instant plug-and-play image and WebP sticker auto-moderation for Telegram groups.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon cyan">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <h3>Zero Cloud Leakage</h3>
+        <p>All image arrays are processed strictly in RAM and erased immediately post-inference. No user media is ever saved or exposed to disk.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon pink">
+          <i data-lucide="box"></i>
+        </div>
+        <h3>Docker & Cloud Native</h3>
+        <p>Prebuilt Docker container and Compose manifest with preloaded OpenCV and libgl dependencies for seamless single-command deployment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Reference Table -->
+  <section id="endpoints" class="container terminal-section">
+    <div class="section-title">
+      <h2>API Endpoints & Integration</h2>
+      <p>Clean, standard REST API built on FastAPI OpenAPI specs</p>
+    </div>
+
+    <div class="terminal-box">
+      <div class="terminal-topbar">
+        <div class="dots">
+          <div class="dot red"></div>
+          <div class="dot yellow"></div>
+          <div class="dot green"></div>
+        </div>
+        <span style="font-size: 12px; color: var(--text-dim); font-family: var(--font-mono);">
+          POST /check - OpenAPI v3.1
+        </span>
+      </div>
+      <div class="terminal-body">
+        <table class="command-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Endpoint</th>
+              <th>Payload</th>
+              <th>Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="cmd-name" style="color: #10b981;">GET</span></td>
+              <td><code>/</code></td>
+              <td>None</td>
+              <td><code>{"status": "ok", "ready": true}</code></td>
+            </tr>
+            <tr>
+              <td><span class="cmd-name" style="color: #10b981;">GET</span></td>
+              <td><code>/health</code></td>
+              <td>None</td>
+              <td><code>{"status": "ok", "detector": true}</code></td>
+            </tr>
+            <tr>
+              <td><span class="cmd-name" style="color: #8b5cf6;">POST</span></td>
+              <td><code>/check</code></td>
+              <td>Multipart <code>file</code></td>
+              <td><code>{"nsfw": bool, "score": float, "labels": [...]}</code></td>
+            </tr>
+            <tr>
+              <td><span class="cmd-name" style="color: #8b5cf6;">POST</span></td>
+              <td><code>/check_frame</code></td>
+              <td>Multipart <code>file</code> (GIF/Video)</td>
+              <td><code>{"nsfw": bool, "score": float, "labels": [...]}</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deployment Options -->
+  <section id="deploy" class="container deploy-section">
+    <div class="section-title">
+      <h2>One-Click Cloud Deployment</h2>
+      <p>Host on your private infrastructure in minutes</p>
+    </div>
+
+    <a href="https://dashboard.heroku.com/new?template=https://github.com/SUDEEPBOTS/YUKI-NSFW-API" target="_blank" class="deploy-card" style="text-decoration: none;">
+      <div class="deploy-info">
+        <div class="deploy-logo">🟣</div>
+        <div>
+          <div class="deploy-title">Deploy to Heroku</div>
+          <div class="deploy-desc">1-click cloud container worker with automated port binding</div>
+        </div>
+      </div>
+      <span class="btn btn-outline">Launch Heroku</span>
+    </a>
+
+    <a href="https://render.com/deploy" target="_blank" class="deploy-card" style="text-decoration: none;">
+      <div class="deploy-info">
+        <div class="deploy-logo">🔷</div>
+        <div>
+          <div class="deploy-title">Deploy to Render</div>
+          <div class="deploy-desc">Fast container web service with automated GitHub sync</div>
+        </div>
+      </div>
+      <span class="btn btn-outline">Launch Render</span>
+    </a>
+
+    <div class="deploy-card">
+      <div class="deploy-info">
+        <div class="deploy-logo">🐳</div>
+        <div>
+          <div class="deploy-title">Docker Compose & VPS</div>
+          <div class="deploy-desc">Run locally via docker compose up -d --build (Port 7860)</div>
+        </div>
+      </div>
+      <a href="https://github.com/SUDEEPBOTS/YUKI-NSFW-API#-docker-deployment" target="_blank" class="btn btn-outline">View Docs</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>
+        Crafted with 🧠 by <a href="https://github.com/SUDEEPBOTS" target="_blank">SUDEEPBOTS</a> • 
+        Licensed under <a href="https://github.com/SUDEEPBOTS/YUKI-NSFW-API/blob/main/LICENSE" target="_blank">MIT</a>
+      </p>
+      <p style="margin-top: 8px;">
+        © 2026 SUDEEPBOTS. All Rights Reserved. Yuki NSFW API is an independent open-source engine.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

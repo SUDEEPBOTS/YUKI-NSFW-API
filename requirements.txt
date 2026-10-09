@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+nudenet
+pillow
+python-multipart
+httpx
